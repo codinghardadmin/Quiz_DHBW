@@ -4,41 +4,61 @@
 <head>
     <title>Editieren</title>
     <meta charset="utf-8">
+
+    <style>
+
+    </style>
+
 </head>
 
 <body>
 
 <?php
 
+include("config.php");
 $pdo = new PDO('mysql:host=localhost;dbname=quizdb', 'root', '');
 
-// Hinzufügen
-echo "
+?>
+
+
     <h2>Hinzufügen</h2>
     <form action='edit.php' method='post'>
-        Frage:
+        Frage:<br>
         <textarea name='frage'></textarea>
-        Richtige Antwort:
+        <br>
+        Richtige Antwort:<br>
         <input name='antwort1' type='text'>
-        Falsche Antwort:
+        <br>
+        Falsche Antwort:<br>
         <input name='antwort2' type='text'>
-        Falsche Antwort:
+        <br>
+        Falsche Antwort:<br>
         <input name='antwort3' type='text'>
-        Falsche Antwort:
+        <br>
+        Falsche Antwort:<br>
         <input name='antwort4' type='text'>
-        Schwierigkeit:
+        <br>
+        Schwierigkeit:<br>
         <input name='schwer' type='number'>
-        Thema:
+        <br>
+        Thema:<br>
         <select name='thema'>
-            <option>Chemie</option>
-            <option>Biologie</option>
-            <option>Physik</option>
+
+<?php
+
+foreach($themen as $thema) {
+    echo "<option>" . $thema . "</option>";
+}
+
+?>
+
         </select>
+        <br><br>
         <button>Hinzufügen</button>
     </form>
-";
+    <hr>
 
-echo "<br>";
+<?php
 
 if (isset($_POST["frage"]) && isset($_POST["antwort1"])
  && isset($_POST["antwort2"]) && isset($_POST["antwort3"]) 
@@ -51,25 +71,31 @@ if (isset($_POST["frage"]) && isset($_POST["antwort1"])
     echo "<p>Die Frage wurde hinzugefügt</p>";
 }
 
-// Editieren und Löschen
-echo "
+?>
+
     <h2>Editieren und löschen</h2>
     <form action='edit.php' method='post'>
         Frage:
         <select name='delete'>
-";
+
+<?php
 
 $sql = "SELECT frage FROM fragen";
 foreach ($pdo->query($sql) as $row) {
     echo "<option>" . $row['frage'] . "</option>";
 }
 
-echo "
+?>
+
         </select>
+        <br>
+        <br>
         <button name='chooseBtn' value='delete'>Löschen</button>
         <button name='chooseBtn' value='edit'>Bearbeiten</button>
     </form>
-";
+    <hr>
+
+<?php
 
 if (isset($_POST["chooseBtn"])) {
     switch($_REQUEST["chooseBtn"]) {
@@ -84,7 +110,7 @@ if (isset($_POST["chooseBtn"])) {
 
         case "edit":
 
-            header("Location: test.php");
+            header("Location: editfrage.php?frage=" . $_POST["delete"]);
 
             break;
     }
@@ -94,17 +120,23 @@ if (isset($_POST["delete"])) {
 
     
 }
-
-
-
-
-
-
-
-
-
 //$statement = $pdo->prepare("UPDATE users SET email = ? WHERE id = ?");
 //$statement->execute(array('neu@php-einfach.de', 1));
+
+echo "<h2>Alle Fragen</h2>";
+
+$sql = "SELECT frage, antwort1, antwort2, antwort3, antwort4, schwer, thema FROM fragen ORDER BY schwer ASC";
+
+foreach ($pdo->query($sql) as $row) {
+    echo "<p>Frage:" . $row['frage'] . "<br>
+         Richtige Antwort:" . $row['antwort1'] . "<br>
+         Falsche Antwort 1:" . $row['antwort2'] . "<br>
+         Falsche Antwort 2:" . $row['antwort3'] . "<br>
+         Falsche Antwort 3:" . $row['antwort4'] . "<br>
+         Frage:" . $row['schwer'] . "<br>
+         Frage:" . $row['thema'] . "<br>
+    ";
+}
 
 ?>
 
