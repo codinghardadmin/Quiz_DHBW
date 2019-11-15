@@ -6,7 +6,11 @@
     <meta charset="utf-8">
 
     <style>
-
+        body {
+            margin: 50px;
+            font-family: "Arial";
+            background: #EEEEEE;
+        }
     </style>
 
 </head>
@@ -16,10 +20,9 @@
 <?php
 
 include("config.php");
-$pdo = new PDO('mysql:host=localhost;dbname=quizdb', 'root', '');
+$pdo = new PDO("mysql:host=".$db_host.";dbname=".$db_name,$db_user,$db_pass);
 
 ?>
-
 
     <h2>Hinzufügen</h2>
     <form action='edit.php' method='post'>
@@ -56,7 +59,6 @@ foreach($themen as $thema) {
         <br><br>
         <button>Hinzufügen</button>
     </form>
-    <hr>
 
 <?php
 
@@ -73,7 +75,29 @@ if (isset($_POST["frage"]) && isset($_POST["antwort1"])
 
 ?>
 
-    <h2>Editieren und löschen</h2>
+    <hr>
+    <h2>Editieren</h2>
+    <form action='editfrage.php' method='post'>
+        Frage:
+        <select name='edit'>
+
+<?php
+
+$sql = "SELECT frage FROM fragen";
+foreach ($pdo->query($sql) as $row) {
+    echo "<option>" . $row['frage'] . "</option>";
+}
+
+?>
+
+        </select>
+        <br>
+        <br>
+        <button>Bearbeiten</button>
+    </form>
+
+    <hr>
+    <h2>Löschen</h2>
     <form action='edit.php' method='post'>
         Frage:
         <select name='delete'>
@@ -90,38 +114,24 @@ foreach ($pdo->query($sql) as $row) {
         </select>
         <br>
         <br>
-        <button name='chooseBtn' value='delete'>Löschen</button>
-        <button name='chooseBtn' value='edit'>Bearbeiten</button>
+        <button>Löschen</button>
     </form>
-    <hr>
 
 <?php
 
-if (isset($_POST["chooseBtn"])) {
-    switch($_REQUEST["chooseBtn"]) {
-        case "delete":
-
-            $statement = $pdo->prepare("DELETE FROM fragen WHERE frage = ?");
-            $statement->execute(array($_POST["delete"]));
-
-            echo "<p>Die Frage wurde entfernt</p>";
-
-            break;
-
-        case "edit":
-
-            header("Location: editfrage.php?frage=" . $_POST["delete"]);
-
-            break;
-    }
-}
-
 if (isset($_POST["delete"])) {
 
-    
+    $statement = $pdo->prepare("DELETE FROM fragen WHERE frage = ?");
+    $statement->execute(array($_POST["delete"]));
+
+    echo "<p>Die Frage wurde entfernt</p>";
 }
-//$statement = $pdo->prepare("UPDATE users SET email = ? WHERE id = ?");
-//$statement->execute(array('neu@php-einfach.de', 1));
+
+?>
+
+    <hr>
+
+<?php
 
 echo "<h2>Alle Fragen</h2>";
 

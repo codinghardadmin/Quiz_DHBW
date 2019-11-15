@@ -10,7 +10,7 @@
 
 <?php
 
-include("connectdb.php");
+
 
 ?>
 
