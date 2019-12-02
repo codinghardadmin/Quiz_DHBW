@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 4.8.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 15. Nov 2019 um 22:21
--- Server-Version: 10.1.38-MariaDB
--- PHP-Version: 7.3.4
+-- Erstellungszeit: 02. Dez 2019 um 17:07
+-- Server-Version: 10.1.37-MariaDB
+-- PHP-Version: 7.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -44,12 +44,32 @@ CREATE TABLE `fragen` (
 --
 
 INSERT INTO `fragen` (`id`, `frage`, `antwort1`, `antwort2`, `antwort3`, `antwort4`, `schwer`, `thema`) VALUES
-(2, 'a', 'a', 'a', 'a', 'a', 3, 'Chemie'),
-(5, 'erfddsaf', 'dfsafas', 'dsfsf', 'asfdsf', 'fasdf', 3, 'Biologie'),
-(6, 'hgjzthjzt', 'jruzj', 'oilÃ¶opÃ¶', 'trgtrh', 'io', 4, 'Physik'),
-(7, 'sadfds sadfds sadfds sadfds sadfds sadfds sadfds', 'fsdaf', 'fsdfh', 'hfdh', 'zuzi', 4, 'Chemie'),
-(8, 'sadfds sadfds sadfds sadfds sadfds sadfds sadfds', 'fsdaf', 'fsdfh', 'hfdh', 'zuzi', 4, 'Chemie'),
-(9, 'sadfds sadfds sadfds sadfds sadfds sadfds sadfds', 'fsdaf', 'fsdfh', 'hfdh', 'zuzi', 4, 'Chemie');
+(11, 'Anzahl der Beine einer Katze', '4', '1', '5', '9', 12, 'Biologie'),
+(12, 'Wie viele Augen hat ein Hund?', '4', '10', '20', '40', 1, 'Biologie'),
+(13, 'Welches Element ist Bestand der organischen Chemie?', 'Kohlenstoff', 'Sauaersoff', '', '', 0, 'Chemie'),
+(14, 'Welcher Teil des Prozessors ist fÃ¼r die Berechnung zustÃ¤ndig?', 'ALU', 'Register', 'Program Counter', 'ROM', 4, 'Informatik'),
+(16, 'ddasd', 'ssdfvcf', 'dvfvfg', 'vfgvrg', 'btrgbt', 8, 'Physik'),
+(17, 'test1111edwedwede', 'test1', 'test2', 'test3', 'test4', 22, 'Technik');
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `quiz`
+--
+
+CREATE TABLE `quiz` (
+  `id` int(11) NOT NULL,
+  `anzahl` int(11) NOT NULL,
+  `schwer` int(11) NOT NULL,
+  `thema` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Daten für Tabelle `quiz`
+--
+
+INSERT INTO `quiz` (`id`, `anzahl`, `schwer`, `thema`) VALUES
+(1, 2, 4, 'Sonstiges');
 
 --
 -- Indizes der exportierten Tabellen
@@ -62,6 +82,12 @@ ALTER TABLE `fragen`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indizes für die Tabelle `quiz`
+--
+ALTER TABLE `quiz`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT für exportierte Tabellen
 --
 
@@ -69,7 +95,13 @@ ALTER TABLE `fragen`
 -- AUTO_INCREMENT für Tabelle `fragen`
 --
 ALTER TABLE `fragen`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT für Tabelle `quiz`
+--
+ALTER TABLE `quiz`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
