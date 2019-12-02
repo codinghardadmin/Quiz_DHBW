@@ -6,6 +6,7 @@ $db_user = "root";
 $db_pass = "";
 
 $themen = array(
+    "Sonstiges",
     "Chemie",
     "Biologie",
     "Physik",
