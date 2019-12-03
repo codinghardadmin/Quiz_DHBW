@@ -1,5 +1,4 @@
 <?php
-
 $db_host = "localhost";
 $db_name = "quizdb";
 $db_user = "root";
@@ -14,5 +13,4 @@ $themen = array(
     "Informatik",
     "Technik"
 );
-
 ?>
