@@ -2,23 +2,45 @@
 <html>
 
 <head>
-    <title>Frage editieren</title>
+    <title>Eintrag editieren</title>
     <meta charset="utf-8">
-
     <style>
         body {
             margin: 50px;
             font-family: "Arial";
-            background: #EEEEEE;
+        }
+        input[type=text], input[type=number], select, textarea {
+            width: 500px;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            /*width: 100%;*/
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 18px;
+            margin: 2px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
         }
     </style>
 
 </head>
-
 <body>
 
-<?php
+<h1>Eintrag editieren</h1>
 
+<?php
 include("config.php");
 $pdo = new PDO("mysql:host=".$db_host.";dbname=".$db_name,$db_user,$db_pass);
 
@@ -35,7 +57,6 @@ try {
 }
 
 if (isset($_POST["frage"]) && isset($_POST["editform"])) { // Hier evtl noch mehr abprüfen! Pflichtfelder !!! Dies kann auch mit required im Formularfeld passieren
-
     $frage = $_POST["frage"];
     $antwort1 = $_POST["antwort1"];
     $antwort2 = $_POST["antwort2"];
@@ -53,13 +74,9 @@ if (isset($_POST["frage"]) && isset($_POST["editform"])) { // Hier evtl noch meh
 $statement = $pdo->prepare("SELECT id, frage, antwort1, antwort2, antwort3, antwort4, schwer, thema FROM fragen WHERE id = ?");
 $editquestion = "";
 $statement->execute(array($editId));
-
 ?>
 
-
 <?php while ($row = $statement->fetch()) { ?>
-
-    <h2>Frage editieren</h2>
     <form action='editfrage.php<?php echo "?edit=".$row['id']; ?>' method='post'>
         ID:<br>
         <input name='id' type="number" value="<?php echo $row['id'] ?>" disabled=true>
@@ -84,15 +101,11 @@ $statement->execute(array($editId));
         <br>
         Thema:<br>
         <select name='thema' value="<?php  ?>">
-
 <?php
-
 foreach($themen as $thema) {
     echo "<option" . ($thema == $row['thema'] ? " selected=true>" : ">") . $thema . "</option>";
 }
-
 ?>
-
         </select>
         <!-- Für Sicherstellung, das die Daten vom Editierungsformular kommen -->
         <input name="editform" value="1" type="hidden">
@@ -101,33 +114,9 @@ foreach($themen as $thema) {
         <button>Ändern</button>
     </form>
 
-<?php } ?>
-
-<?php
-
-/*
-var_dump(isset($_POST["frage"]));
-var_dump(isset($_POST["antwort1"]));
-var_dump(isset($_POST["antwort2"]));
-var_dump(isset($_POST["antwort3"]));
-var_dump(isset($_POST["antwort4"]));
-var_dump(isset($_POST["thema"]));
-var_dump(isset($_POST["editform"]));
-var_dump(isset($_POST["id"]));
-
-$frage = $_POST["frage"];
-$antwort1 = $_POST["antwort1"];
-$antwort2 = $_POST["antwort2"];
-$antwort3 = $_POST["antwort3"];
-$antwort4 = $_POST["antwort4"];
-$thema = $_POST["thema"];
-$editform = $_POST["editform"];
-$id = $_POST["id"];
-
-*/
-
+<?php 
+} 
 ?>
 
 </body>
-
 </html>
