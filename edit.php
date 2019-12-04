@@ -79,6 +79,11 @@ $pdo = new PDO("mysql:host=".$db_host.";dbname=".$db_name,$db_user,$db_pass);
 ?>
     <h1>Admin Panel: Editieren</h1>
 
+    <form action='quiz.php' method='get'>
+        <button>Zum Quiz</button>
+    </form>
+    <br>
+
     <details>
     <summary>Hinzufügen</summary>
     <h2>Hinzufügen</h2>

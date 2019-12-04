@@ -84,7 +84,7 @@ function printResults($pdo, $id) {
 
 function printQuestion($pdo, $id) {
     if (isset($_POST["f1"])) {
-        echo "F1: " . $_POST["f1"];
+        //echo "F1: " . $_POST["f1"];
         $chosenId = 0;
         switch($_POST["f1"]) {
             case "N2": $chosenId = 1; break;
@@ -224,6 +224,12 @@ if (!isset($_GET["id"])) {
         // Erstellen eines Quiz
 ?>  
     <h2>Quiz erstellen</h2>
+
+    <form action='edit.php' method='get'>
+        <button>Zum Admin-Panel</button>
+    </form>
+    <br>
+
     <form action='quiz.php' method='post'>
         Anzahl Fragen:<br>
         <input type="number" name='anzahl' placeholder="3"></input>

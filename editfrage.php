@@ -113,7 +113,9 @@ foreach($themen as $thema) {
         <br><br>
         <button>Ändern</button>
     </form>
-
+    <form action='edit.php' method='get'>
+        <button>Zurück zum Admin-Panel</button>
+    </form>
 <?php 
 } 
 ?>
