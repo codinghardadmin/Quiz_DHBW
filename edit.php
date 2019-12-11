@@ -1,35 +1,28 @@
+<?php
+
+/*
+Auf dieser Seite befindet sich das Admin-Panel. Es können neue Fragen hinzugefügt werden, bearbeitet werden, gelöscht werden und alle bestehenden
+Fragen angeschaut werden. Diese können nach den unterschiedlichen Spalten sortiert werden.
+*/
+
+?>
+
 <!DOCTYPE html>
 <html>
 
-<head>
+<head lang="de">
     <title>Editieren</title>
     <meta charset="utf-8">
     <style>
+
+        /*
+        CSS Styles für den Body, die Inputfelder und die Buttons, die Tabelle und Tabellenfelder
+        */
+
         body {
             margin: 50px;
             font-family: "Arial";
         }
-        
-        /*button {
-            background-color: #4CAF50;
-            border: none;
-            color: white;
-            padding: 10px px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            cursor: pointer;
-            -webkit-transition-duration: 0.4s;  Safari 
-            transition-duration: 0.4s;
-        }
-        button:hover {
-            box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
-        }*/
-
-
-
 
         input[type=text], input[type=number], select, textarea {
             width: 500px;
@@ -42,7 +35,6 @@
         }
 
         button {
-            /*width: 100%;*/
             background-color: #4CAF50;
             color: white;
             padding: 12px 18px;
@@ -70,6 +62,7 @@
         th, td {
             padding: 15px;
         }
+
     </style>
 </head>
 <body>
@@ -228,32 +221,7 @@ foreach ($pdo->query($sql) as $row) {
 echo "</table>";
 echo "<br>";
 
-/*
-
-$sql = "SELECT frage, antwort1, antwort2, antwort3, antwort4, schwer, thema FROM fragen ORDER BY schwer ASC";
-
-foreach ($pdo->query($sql) as $row) {
-    echo "<p>Frage: " . $row['frage'] . "<br>
-         Richtige Antwort: " . $row['antwort1'] . "<br>
-         Falsche Antwort 1: " . $row['antwort2'] . "<br>
-         Falsche Antwort 2: " . $row['antwort3'] . "<br>
-         Falsche Antwort 3: " . $row['antwort4'] . "<br>
-         Schwierigkeit: " . $row['schwer'] . "<br>
-         Thema: " . $row['thema'] . "<br>
-    ";
-}
-
-echo "</details>";
-*/
-
-
-
-// ORDER BY SCHWER ODER THEMA ALS 2 BUTTONS!
-// MUSS NOCH IMPLEMENTIERT WERDEN!
-
-//echo "<br>";
-
-
 ?>
+
 </body>
 </html>
