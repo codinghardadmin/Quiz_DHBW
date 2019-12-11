@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-<head>
+<head lang="de">
     <title>Quiz</title>
     <meta charset="utf-8">
     <style>
@@ -99,9 +99,11 @@ function printQuestion($pdo, $id) {
         $row = $statement->fetch();
         $lsg = $row["lsg"];
 
-        echo "LSG: $lsg CHOSENID: $chosenId";
+        echo "<b>Letzer richtiger Index: $lsg  Jetzt gewählter Index: $chosenId</b>";
 
-        if ($lsg = $chosenId) {
+        //echo "LSG: $lsg CHOSENID: $chosenId";
+
+        if ($lsg == $chosenId) {
             echo "<br><b>Die letzte Antwort war richtig</b><br>";
             addAktuell($pdo, $id, true);
         } else {
@@ -149,6 +151,7 @@ function printQuestion($pdo, $id) {
     $fragen = array($row["antwort1"], $row["antwort2"], $row["antwort3"], $row["antwort4"]);
     shuffle($fragen);
 
+    /*
     $lsg_index = 0;
     if ($fragen[1] == $row["antwort1"]) {
         $lsg_index = 1;
@@ -157,6 +160,12 @@ function printQuestion($pdo, $id) {
     } else if ($fragen[3] == $row["antwort1"]) {
         $lsg_index = 3;
     }
+    */
+
+    $lsg_index = array_search($row["antwort1"], $fragen);
+
+    $debugmsg = "LSGINDEX: " . $lsg_index . " A1: " . $fragen[0] . " A2: " . $fragen[1] . " A3: " . $fragen[2] . " A4: " . $fragen[3]; 
+    echo "<script>window.alert('".$debugmsg."');</script>";
 
     $statement = $pdo->prepare("UPDATE quiz SET lsg = ? WHERE id = ?");
     $statement->execute(array($lsg_index, $id)); 
