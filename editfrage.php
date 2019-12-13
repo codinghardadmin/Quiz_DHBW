@@ -8,9 +8,9 @@ wird vom aufrufenden Skript festgelegt.
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="de">
 
-<head lang="de">
+<head>
     <title>Eintrag editieren</title>
     <meta charset="utf-8">
     <style>
