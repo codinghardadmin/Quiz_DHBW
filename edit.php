@@ -8,9 +8,9 @@ Fragen angeschaut werden. Diese können nach den unterschiedlichen Spalten sorti
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="de">
 
-<head lang="de">
+<head>
     <title>Editieren</title>
     <meta charset="utf-8">
     <style>
@@ -67,16 +67,21 @@ Fragen angeschaut werden. Diese können nach den unterschiedlichen Spalten sorti
 </head>
 <body>
 <?php
+// Einlesen der Konfigurationsdatei
 include("config.php");
+// Erstellen des PDO Objektes für die Datenbankverbindung
 $pdo = new PDO("mysql:host=".$db_host.";dbname=".$db_name,$db_user,$db_pass);
 ?>
+
     <h1>Admin Panel: Editieren</h1>
 
+    <!-- Button, um zum Quiz zu gelangen -->
     <form action='quiz.php' method='get'>
         <button>Zum Quiz</button>
     </form>
     <br>
 
+    <!-- Ausklappbares Formular, in dem eine Frage hinzugefügt werden kann -->
     <details>
     <summary>Hinzufügen</summary>
     <h2>Hinzufügen</h2>
@@ -101,11 +106,14 @@ $pdo = new PDO("mysql:host=".$db_host.";dbname=".$db_name,$db_user,$db_pass);
         <br>
         Thema:<br>
         <select name='thema'>
-<?php
-foreach($themen as $thema) {
-    echo "<option>" . $thema . "</option>";
-}
-?>
+
+        <?php
+        // Durch alle Themen iterieren und diese im Select anzeigen
+        foreach($themen as $thema) {
+            echo "<option>" . $thema . "</option>";
+        }
+        ?>
+
         </select>
         <br><br>
         <button>Hinzufügen</button>
@@ -113,30 +121,43 @@ foreach($themen as $thema) {
     </details>
 
 <?php
+
+// Abfrage, ob alle Werte gesetzt sind
 if (isset($_POST["frage"]) && isset($_POST["antwort1"])
  && isset($_POST["antwort2"]) && isset($_POST["antwort3"]) 
  && isset($_POST["antwort4"]) && isset($_POST["schwer"]) 
  && isset($_POST["thema"])) {
 
+    // SQL Statement, um eine Frage in die Datenbank einzutragen
     $statement = $pdo->prepare("INSERT INTO fragen (frage, antwort1, antwort2, antwort3, antwort4, schwer, thema) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    // Ersetzen der Fragezeichen und Ausführung des Befehls
     $statement->execute(array($_POST["frage"], $_POST["antwort1"], $_POST["antwort2"], $_POST["antwort3"], $_POST["antwort4"], $_POST["schwer"], $_POST["thema"])); 
 
+    // Ausgabe, dass die Frage hinzugefügt wurde
     echo "<p>Die Frage wurde hinzugefügt</p>";
 }
 ?>
     <hr>
+
+    <!-- Ausklapbares Formular, in dem man die Frage zum Editieren auswählen kann -->
     <details>
     <summary>Editieren</summary>
     <h2>Editieren</h2>
+    <!-- Weiterleitung an die Seite, um dort die Frage zu editieren -->
     <form action='editfrage.php' method='post'>
         Frage:
         <select name='edit'>
-<?php
-$sql = "SELECT id, frage FROM fragen";
-foreach ($pdo->query($sql) as $row) {
-    echo "<option value='" .  $row['id'] . "'>" . $row['frage'] . "</option>";
-}
-?>
+
+        <?php  
+        // SQL Abfrage, um von jeder Frage in der Tabelle die id und die jeweilige Frage zu bekommen
+        $sql = "SELECT id, frage FROM fragen";
+        // Durch die Datensätze durchiterieren
+        foreach ($pdo->query($sql) as $row) {
+            // Hinzufügen der Option zum Select mit der Frage als Namen und der Frage_ID als id der Option
+            echo "<option value='" .  $row['id'] . "'>" . $row['frage'] . "</option>";
+        }
+        ?>
+
         </select>
         <br>
         <br>
@@ -145,29 +166,41 @@ foreach ($pdo->query($sql) as $row) {
     </details>
 
     <hr>
+
+    <!-- Ausklappbares Formular, in dem man die Frage zum löschen auswählen kann -->
     <details>
     <summary>Löschen</summary>
     <h2>Löschen</h2>
     <form action='edit.php' method='post'>
         Frage:
         <select name='delete'>
-<?php
-$sql = "SELECT id, frage FROM fragen";
-foreach ($pdo->query($sql) as $row) {
-    echo "<option value='" .  $row['id'] . "'>" . $row['frage'] . "</option>";
-}
-?>
+
+        <?php
+        // SQL Abfrage, um von jeder Frage in der Tabelle die id und die jeweilige Frage zu bekommen
+        $sql = "SELECT id, frage FROM fragen";
+        // Durch die Datensätze durchiterieren
+        foreach ($pdo->query($sql) as $row) {
+            // Hinzufügen der Option zum Select mit der Frage als Namen und der Frage_ID als id der Option
+            echo "<option value='" .  $row['id'] . "'>" . $row['frage'] . "</option>";
+        }
+        ?>
+
         </select>
         <br>
         <br>
         <button>Löschen</button>
     </form>
     </details>
+
 <?php
+// Prüfen, ob der Parameter delete gesetzt ist (wenn im Formular vorher ausgewählt)
 if (isset($_POST["delete"])) {
+    // SQL Statement, um die Frage an einer bestimmten id zu löschen
     $statement = $pdo->prepare("DELETE FROM fragen WHERE id = ?");
+    // Fragezeichen im SQL Statement durch den Parameter delete ersetzen
     $statement->execute(array($_POST["delete"]));
 
+    // Ausgabe, dass die Frage gelöscht wurde
     echo "<p>Die Frage wurde entfernt</p>";
 }
 ?>
@@ -176,17 +209,20 @@ if (isset($_POST["delete"])) {
 <?php
 
 
-
+// Ein bereits aufgeklappter Bereich, in dem die Daten angezeigt werden
 echo "
 <details open>
 <summary>Datenbank</summary>
 <h2>Alle Fragen (mit Pfeilen jeweilige Spalte sortieren)</h2>
 ";
 
-
+// Standardmäßig wird frage sortiert
 $sort = "frage";
+// Abfragem ob der Parameter gesetzt ist
 if (isset($_GET["sort"])) {
+    // Zuweisung an Variable
     $get_sort = $_GET["sort"];
+    // Abfrage, ob der Parameter Sinn ergibt (einer der vorgefertigten Werte)
     if ($get_sort == "frage" or $get_sort == "antwort1" or $get_sort == "antwort2"
         or $get_sort == "antwort3"  or $get_sort == "antwort4" or $get_sort == "schwer"
         or $get_sort == "thema") {
@@ -194,8 +230,11 @@ if (isset($_GET["sort"])) {
     }
 }
 
+// Definition der SQL Statements, um sämtliche Daten aus der Tabelle fragen zu bekommen
+// Diese werden dann noch nach sort(vorher definiert) aufsteigend sortieren
 $sql = "SELECT frage, antwort1, antwort2, antwort3, antwort4, schwer, thema FROM fragen ORDER BY $sort ASC";
 
+// Ausgabe der Tabellenstruktur
 echo "<table>";
 echo "<tr>
 <th>Frage<form action='edit.php' method='get'><input type='hidden' name='sort' value='frage'><button>&#x2193;</button></form></th>
@@ -207,7 +246,9 @@ echo "<tr>
 <th>Thema<form action='edit.php' method='get'><input type='hidden' name='sort' value='thema'><button>&#x2193;</button></form></th>
 </tr>";
 
+// SQL Statement ausführen und durch alle Datensätze iterieren
 foreach ($pdo->query($sql) as $row) {
+    // Ausgabe der einzelnen Zeilen der Tabelle
     echo "<tr><td>" . $row['frage'] . "</td>
          <td>" . $row['antwort1'] . "</td>
          <td>" . $row['antwort2'] . "</td>
@@ -218,6 +259,7 @@ foreach ($pdo->query($sql) as $row) {
     ";
 }
 
+// Tabelle 'abschließen'
 echo "</table>";
 echo "<br>";
 
