@@ -73,52 +73,18 @@ include("config.php");
 $pdo = new PDO("mysql:host=".$db_host.";dbname=".$db_name,$db_user,$db_pass);
 ?>
 
-    <h1>Admin Panel: Editieren</h1>
+<?php
+// Prüfen, ob der Parameter delete gesetzt ist (wenn im Formular vorher ausgewählt)
+if (isset($_POST["delete"])) {
+    // SQL Statement, um die Frage an einer bestimmten id zu löschen
+    $statement = $pdo->prepare("DELETE FROM fragen WHERE id = ?");
+    // Fragezeichen im SQL Statement durch den Parameter delete ersetzen
+    $statement->execute(array($_POST["delete"]));
 
-    <!-- Button, um zum Quiz zu gelangen -->
-    <form action='quiz.php' method='get'>
-        <button>Zum Quiz</button>
-    </form>
-    <br>
-
-    <!-- Ausklappbares Formular, in dem eine Frage hinzugefügt werden kann -->
-    <details>
-    <summary>Hinzufügen</summary>
-    <h2>Hinzufügen</h2>
-    <form action='edit.php' method='post'>
-        Frage:<br>
-        <textarea name='frage' placeholder='Was ist der erste Buchstabe im deutschen Alphabet?'></textarea>
-        <br>
-        Richtige Antwort:<br>
-        <input name='antwort1' type='text' placeholder='A'>
-        <br>
-        Falsche Antwort:<br>
-        <input name='antwort2' type='text' placeholder='N'>
-        <br>
-        Falsche Antwort:<br>
-        <input name='antwort3' type='text' placeholder='R'>
-        <br>
-        Falsche Antwort:<br>
-        <input name='antwort4' type='text' placeholder='X'>
-        <br>
-        Schwierigkeit:<br>
-        <input name='schwer' type='number' placeholder=2>
-        <br>
-        Thema:<br>
-        <select name='thema'>
-
-        <?php
-        // Durch alle Themen iterieren und diese im Select anzeigen
-        foreach($themen as $thema) {
-            echo "<option>" . $thema . "</option>";
-        }
-        ?>
-
-        </select>
-        <br><br>
-        <button>Hinzufügen</button>
-    </form>
-    </details>
+    // Ausgabe, dass die Frage gelöscht wurde
+    echo "<p>Die Frage wurde entfernt</p>";
+}
+?>
 
 <?php
 
@@ -137,6 +103,54 @@ if (isset($_POST["frage"]) && isset($_POST["antwort1"])
     echo "<p>Die Frage wurde hinzugefügt</p>";
 }
 ?>
+
+    <h1>Admin Panel: Editieren</h1>
+
+    <!-- Button, um zum Quiz zu gelangen -->
+    <form action='quiz.php' method='get'>
+        <button>Zum Quiz</button>
+    </form>
+    <br>
+
+    <!-- Ausklappbares Formular, in dem eine Frage hinzugefügt werden kann -->
+    <details>
+    <summary>Hinzufügen</summary>
+    <h2>Hinzufügen</h2>
+    <form action='edit.php' method='post'>
+        Frage:<br>
+        <textarea name='frage' placeholder='Was ist der erste Buchstabe im deutschen Alphabet?' required></textarea>
+        <br>
+        Richtige Antwort:<br>
+        <input name='antwort1' type='text' placeholder='A' required>
+        <br>
+        Falsche Antwort:<br>
+        <input name='antwort2' type='text' placeholder='N' required>
+        <br>
+        Falsche Antwort:<br>
+        <input name='antwort3' type='text' placeholder='R' required>
+        <br>
+        Falsche Antwort:<br>
+        <input name='antwort4' type='text' placeholder='X' required>
+        <br>
+        Schwierigkeit:<br>
+        <input name='schwer' type='number' placeholder=2 required>
+        <br>
+        Thema:<br>
+        <select name='thema' required>
+
+        <?php
+        // Durch alle Themen iterieren und diese im Select anzeigen
+        foreach($themen as $thema) {
+            echo "<option>" . $thema . "</option>";
+        }
+        ?>
+
+        </select>
+        <br><br>
+        <button>Hinzufügen</button>
+    </form>
+    </details>
+
     <hr>
 
     <!-- Ausklapbares Formular, in dem man die Frage zum Editieren auswählen kann -->
@@ -146,7 +160,7 @@ if (isset($_POST["frage"]) && isset($_POST["antwort1"])
     <!-- Weiterleitung an die Seite, um dort die Frage zu editieren -->
     <form action='editfrage.php' method='post'>
         Frage:
-        <select name='edit'>
+        <select name='edit' required>
 
         <?php  
         // SQL Abfrage, um von jeder Frage in der Tabelle die id und die jeweilige Frage zu bekommen
@@ -173,7 +187,7 @@ if (isset($_POST["frage"]) && isset($_POST["antwort1"])
     <h2>Löschen</h2>
     <form action='edit.php' method='post'>
         Frage:
-        <select name='delete'>
+        <select name='delete' required>
 
         <?php
         // SQL Abfrage, um von jeder Frage in der Tabelle die id und die jeweilige Frage zu bekommen
@@ -192,18 +206,7 @@ if (isset($_POST["frage"]) && isset($_POST["antwort1"])
     </form>
     </details>
 
-<?php
-// Prüfen, ob der Parameter delete gesetzt ist (wenn im Formular vorher ausgewählt)
-if (isset($_POST["delete"])) {
-    // SQL Statement, um die Frage an einer bestimmten id zu löschen
-    $statement = $pdo->prepare("DELETE FROM fragen WHERE id = ?");
-    // Fragezeichen im SQL Statement durch den Parameter delete ersetzen
-    $statement->execute(array($_POST["delete"]));
 
-    // Ausgabe, dass die Frage gelöscht wurde
-    echo "<p>Die Frage wurde entfernt</p>";
-}
-?>
     <hr>
 
 <?php
@@ -262,6 +265,7 @@ foreach ($pdo->query($sql) as $row) {
 // Tabelle 'abschließen'
 echo "</table>";
 echo "<br>";
+echo "</details>";
 
 ?>
 

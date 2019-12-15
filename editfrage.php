@@ -116,31 +116,34 @@ Das Formular leitet wieder auf diese Seite weiter mit der id als GET Parameter (
 */
 ?>
 
-<?php while ($row = $statement->fetch()) { ?>
+<?php 
+while ($row = $statement->fetch()) { 
+?>
+
     <form action='editfrage.php<?php echo "?edit=".$row['id']; ?>' method='post'>
         ID:<br>
         <input name='id' type="number" value="<?php echo $row['id'] ?>" disabled=true>
         <br>
         Frage:<br>
-        <textarea name='frage'><?php echo $row['frage'] ?></textarea>
+        <textarea name='frage' required><?php echo $row['frage'] ?></textarea>
         <br>
         Richtige Antwort:<br>
-        <input name='antwort1' type='text' value="<?php echo $row['antwort1'] ?>">
+        <input name='antwort1' type='text' value="<?php echo $row['antwort1'] ?>" required>
         <br>
         Falsche Antwort:<br>
-        <input name='antwort2' type='text' value="<?php echo $row['antwort2'] ?>">
+        <input name='antwort2' type='text' value="<?php echo $row['antwort2'] ?>" required>
         <br>
         Falsche Antwort:<br>
-        <input name='antwort3' type='text' value="<?php echo $row['antwort3'] ?>">
+        <input name='antwort3' type='text' value="<?php echo $row['antwort3'] ?>" required>
         <br>
         Falsche Antwort:<br>
-        <input name='antwort4' type='text' value="<?php echo $row['antwort4'] ?>">
+        <input name='antwort4' type='text' value="<?php echo $row['antwort4'] ?>" required>
         <br>
         Schwierigkeit:<br>
-        <input name='schwer' type='number' value="<?php echo $row['schwer'] ?>">
+        <input name='schwer' type='number' value="<?php echo $row['schwer'] ?>" required>
         <br>
         Thema:<br>
-        <select name='thema' value="<?php  ?>">
+        <select name='thema' value="<?php  ?>" required>
 
 <?php
 
